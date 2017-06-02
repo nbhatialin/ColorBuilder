@@ -9,36 +9,39 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-
-    var colorToPreview: RGBClass?
-    
-    @IBOutlet weak var colorView: UIView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-        if let colorToPreview = colorToPreview {
-            navigationItem.title = colorToPreview.colorName
-            colorView.backgroundColor = colorToPreview.color
+        init (colorToPreview: RGBClass) {
+                self.selectedColor = colorToPreview
+                super.init(nibName: nil, bundle: nil)
         }
-
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+        
+        
+        required init?(coder aDecoder: NSCoder) {
+                fatalError("init(coder:) has not been implemented")
+        }
+        
+        var selectedColor: RGBClass
+        
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                self.view.backgroundColor = selectedColor.color
+                navigationItem.title = selectedColor.colorName
+        }
+        
+        
+        override func didReceiveMemoryWarning() {
+                super.didReceiveMemoryWarning()
+                // Dispose of any resources that can be recreated.
+        }
+        
+        /*
+         // MARK: - Navigation
+         
+         // In a storyboard-based application, you will often want to do a little preparation before navigation
+         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         // Get the new view controller using segue.destinationViewController.
+         // Pass the selected object to the new view controller.
+         }
+         */
+        
 }
