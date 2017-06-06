@@ -20,12 +20,16 @@ class RGBClass
         let color: UIColor
 }
 
+protocol CreateColorViewControllerDelegate {
+        func didCreateColor(_ color: RGBClass, viewController: CreateViewController)
+}
+
 protocol ColorBuilderDelegate {
         var color: RGBClass { get }
         func returnColor() -> RGBClass
 }
 
-class ColorViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
+class ColorViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateColorViewControllerDelegate
 {
         override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
                 let red: RGBClass = RGBClass.init(colorName: "Red", color: UIColor.red)
@@ -70,9 +74,7 @@ class ColorViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 if let sourceViewController = sender.source as? CreateViewController {
                         CBDelegate = sourceViewController
                         let newColor = CBDelegate?.returnColor()
-                        let newIndexPath = IndexPath(row: items.count, section: 0)
-                        items.append(newColor!)
-                        tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        didCreateColor(newColor!, viewController: sourceViewController)
                 }
         }
         
@@ -94,6 +96,12 @@ class ColorViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 let selectedColor: RGBClass = items[indexPath.row]
                 let viewController = DetailViewController(colorToPreview: selectedColor)
                 self.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
+        func didCreateColor(_ color: RGBClass, viewController: CreateViewController) {
+                let newIndexPath = IndexPath(row: items.count, section: 0)
+                items.append(color)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
         
         
